@@ -8,9 +8,10 @@
   <packaging>jar</packaging>
 
   <name>lab</name>
-  <url>http://maven.apache.org</url>
 
   <properties>
+    <maven.compiler.target>19</maven.compiler.target>
+    <maven.compiler.source>19</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
