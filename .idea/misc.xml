@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/exploration" />
+    <file type="web" url="file://$PROJECT_DIR$/networking" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -13,6 +14,7 @@
         <option value="$PROJECT_DIR$/lab/pom.xml" />
         <option value="$PROJECT_DIR$/multithreading/pom.xml" />
         <option value="$PROJECT_DIR$/exploration/pom.xml" />
+        <option value="$PROJECT_DIR$/networking/pom.xml" />
       </list>
     </option>
   </component>
