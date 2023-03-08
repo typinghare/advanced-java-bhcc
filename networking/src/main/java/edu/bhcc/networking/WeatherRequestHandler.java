@@ -1,46 +1,49 @@
 package edu.bhcc.networking;
 
-import java.io.BufferedOutputStream;
+import edu.bhcc.networking.model.Weather;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.Socket;
 
 /**
+ * @author James (Zhuojian Chen)
  * This class handles a weather request from clients.
  */
-public class WeatherRequestHandler implements Runnable {
+public class WeatherRequestHandler extends Handler {
     /**
-     * Client socket.
+     * Weather request handler logger.
      */
-    private final Socket clientSocket;
+    private static final Logger logger = LoggerFactory.getLogger(WeatherRequestHandler.class);
 
     /**
-     * Server input stream. This input stream receives objects from the client socket.
+     * The weather server.
      */
-    private final ObjectInputStream inputStream;
+    private final WeatherServer weatherServer;
 
     /**
-     * Server output stream. This out put stream sends data to the client socket.
+     * Creates a weather request handler.
+     * @param clientSocket  client socket
+     * @param weatherServer weather server that this handler pertains to
      */
-    private final BufferedOutputStream outputStream;
-
-    /**
-     * Creates a weather request handle.
-     * @param clientSocket client socket
-     * @throws IOException if there are issues with input stream or output stream
-     */
-    public WeatherRequestHandler(Socket clientSocket) throws IOException {
-        this.clientSocket = clientSocket;
-        this.inputStream = new ObjectInputStream(clientSocket.getInputStream());
-        this.outputStream = new BufferedOutputStream(clientSocket.getOutputStream());
+    public WeatherRequestHandler(Socket clientSocket, WeatherServer weatherServer) throws IOException {
+        super(clientSocket);
+        this.weatherServer = weatherServer;
     }
 
     @Override
     public void run() {
         try {
-            final String weatherString = (String) inputStream.readObject();
+            final String dateString = (String) inputStream.readObject();
+            final Weather weather = weatherServer.getWeather(dateString);
+
+            // send the result (weather object) to the requester
+            outputStream.writeObject(weather);
+            outputStream.flush();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("There");
+            final String threadName = Thread.currentThread().getName();
+            logger.error("Unexpected error encountered when processing request. Thread: " + threadName);
             throw new RuntimeException(e);
         }
     }

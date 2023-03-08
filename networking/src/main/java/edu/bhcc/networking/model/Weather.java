@@ -1,17 +1,37 @@
 package edu.bhcc.networking.model;
 
+import java.beans.JavaBean;
+import java.io.Serializable;
+
 /**
  * Weather model. This class records the weather condition of one day.
+ * @author James (Zhuojian Chen)
  */
-public class Weather {
+@JavaBean
+public class Weather implements Serializable {
+    /**
+     * Precipitation in ml for the day.
+     */
     private Double precipitation;
 
+    /**
+     * Maximum temperature (Celsius) for the day.
+     */
     private Double tempMax;
 
+    /**
+     * Minimum temperature (Celsius) for the day.
+     */
     private Double tempMin;
 
+    /**
+     * The strength of wind for the day.
+     */
     private Double wind;
 
+    /**
+     * The weather for the day.
+     */
     private String weather;
 
     public Double getPrecipitation() {
