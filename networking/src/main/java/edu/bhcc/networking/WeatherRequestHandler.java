@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -36,6 +37,10 @@ public class WeatherRequestHandler extends Handler {
     public void run() {
         try {
             final String dateString = (String) inputStream.readObject();
+            final InetAddress inetAddress = clientSocket.getInetAddress();
+            logger.info("Received request from: " + inetAddress.toString() +
+                ". The request is: \"" + dateString + "\".");
+
             final Weather weather = weatherServer.getWeather(dateString);
 
             // send the result (weather object) to the requester

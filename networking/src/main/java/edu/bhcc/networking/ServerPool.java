@@ -71,8 +71,7 @@ public class ServerPool implements Closeable {
             // wait for a new connection
             final Socket socket = server.getSocket().accept();
 
-            final InetAddress inetAddress = socket.getInetAddress();
-            logger.info("Received request from: " + inetAddress.toString());
+
 
             // handle new request
             final Handler handler = server.getHandler(socket);
