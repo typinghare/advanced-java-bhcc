@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="exploration:war">
+    <output-path>$PROJECT_DIR$/exploration/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>exploration</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="exploration-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="exploration:war exploded" />
+    </root>
+  </artifact>
+</component>
