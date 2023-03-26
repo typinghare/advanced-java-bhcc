@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 
 /**
  * Weather reader. This class applies common-csv to parse .csv files.
- * @see <a href="https://commons.apache.org/proper/commons-csv/user-guide.html">common-csv<a>
  * @author James (Zhuojian Chen)
+ * @see <a href="https://commons.apache.org/proper/commons-csv/user-guide.html">common-csv<a>
  */
 public class WeatherReader {
     /**

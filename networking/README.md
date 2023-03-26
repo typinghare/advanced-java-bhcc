@@ -14,7 +14,7 @@
    mvn test
    ~~~
 
-I am not sure whether it works on other computers, but it currently work well on my computer.
+I am not sure whether it works on other computers, but it currently works well on my computer.
 
 By the way I really write a lot of loggings in my code, but when I run it by
 
