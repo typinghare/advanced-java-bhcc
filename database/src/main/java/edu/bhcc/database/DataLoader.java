@@ -75,7 +75,7 @@ public class DataLoader {
             for (final Weather weather : weatherList) {
                 lastId = database.insert(weather);
                 if (++i % 100 == 0) {
-                    System.out.println("" + i + " records were recorded.");
+                    System.out.println(i + " records were recorded.");
                 }
             }
 

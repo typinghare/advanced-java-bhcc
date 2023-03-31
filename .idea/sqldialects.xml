@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/database/README.md" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/database/src/main/java/edu/bhcc/database/Database.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/lab/src/main/java/jdbc_10/Main.java" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/lab/src/main/java/ynab/orm/Database.java" dialect="GenericSQL" />
   </component>
 </project>

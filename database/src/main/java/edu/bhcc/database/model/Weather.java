@@ -4,7 +4,7 @@ import java.beans.JavaBean;
 import java.io.Serializable;
 
 /**
- * Weather model. This class records the weather condition of one day.
+ * Weather model. This class records the weather condition of a day.
  * @author James (Zhuojian Chen)
  */
 @SuppressWarnings("unused")

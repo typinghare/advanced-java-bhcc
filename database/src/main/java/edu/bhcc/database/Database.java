@@ -21,6 +21,9 @@ public class Database implements AutoCloseable {
      */
     private final static Logger logger = LoggerFactory.getLogger(Database.class);
 
+    /**
+     * Database config.
+     */
     private final Config config;
 
     /**
@@ -95,17 +98,18 @@ public class Database implements AutoCloseable {
     }
 
     /**
-     * Finds the first satisfied record and returns a corresponding model. The name of the model class is
-     * regarded as the name of the table.
+     * Finds all satisfied records and returns a list of models. The name of the model class is regarded as
+     * the name of the table.
      * @param modelClass  a model class
      * @param whereClause where clause
-     * @return a model instance; null if no satisfied record or errors occur
+     * @param limit       limit
+     * @return a list of model instances; null if errors occur
      */
-    public <T> T find(Class<T> modelClass, String whereClause) {
+    public <T> List<T> findAll(Class<T> modelClass, String whereClause, int limit) {
         final String tableName = toCamelCase(modelClass.getSimpleName());
 
         try {
-            final String sql = "SELECT * FROM `" + tableName + "` WHERE " + whereClause + " LIMIT 1;";
+            final String sql = "SELECT * FROM `" + tableName + "` WHERE " + whereClause + " LIMIT " + limit + ";";
             if (config.toLogSql()) logger.info("[SQL] " + sql);
 
             final PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -121,7 +125,8 @@ public class Database implements AutoCloseable {
                 }
             }
 
-            if (resultSet.next()) {
+            final List<T> list = new ArrayList<>();
+            while (resultSet.next()) {
                 final T object = modelClass.getConstructor().newInstance();
                 for (final String name : attributeMethodMap.keySet()) {
                     final Method method = attributeMethodMap.get(name);
@@ -140,14 +145,27 @@ public class Database implements AutoCloseable {
 
                     method.invoke(object, value);
                 }
-                return object;
-            } else {
-                return null;
+                list.add(object);
             }
+
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Finds the first satisfied records and returns a list of models. The name of the model class is regarded
+     * as the name of the table.
+     * @param modelClass  a model class
+     * @param whereClause where clause
+     * @return a model instance; null if no satisfied record or errors occur
+     */
+    public <T> T find(Class<T> modelClass, String whereClause) {
+        List<T> list = findAll(modelClass, whereClause, 1);
+
+        return list != null && list.size() >= 1 ? list.get(0) : null;
     }
 
     @Override
@@ -170,6 +188,11 @@ public class Database implements AutoCloseable {
 
     /**
      * Database config.
+     * @param url      the url of the database connection
+     * @param username the username
+     * @param password the password
+     * @param database the database
+     * @param toLogSql whether to log sql
      */
     public record Config(
         String url,
