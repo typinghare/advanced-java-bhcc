@@ -80,6 +80,6 @@ start reading the file, store the data, and insert records into the database.
    ~~~
 
 ## About the Implementation
-> I am sorry that I may have the Encapsulation Paranoid. In the past I just import third-party libraries to finish all
-> my work, like ORM libraries such as Hibernate and MyBatis. Now I would like to try if I can code up a simple one by 
-> myself.
+> I am sorry that I may have the Encapsulation Paranoid. In the past I just imported third-party libraries, 
+> like ORM libraries such as Hibernate and MyBatis, to finish my work. 
+> Now I would like to try if I can code up a simple one by myself.
