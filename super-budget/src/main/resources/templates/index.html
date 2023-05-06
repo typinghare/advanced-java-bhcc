@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Super Budget</title>
+
+    <!-- Boostrap stylesheet file. -->
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/fontawesome6/css/fontawesome.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/fontawesome6/css/brands.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/fontawesome6/css/solid.css"/>
+
+
+    <!-- Custom stylesheet. -->
+    <style>
+        .container-fluid {
+            padding: 1rem 5%;
+        }
+
+        .banner {
+            font-size: 2em;
+            color: royalblue;
+            font-weight: bold;
+        }
+
+        section {
+            border: 1px #999999 solid;
+            border-radius: 0.5em;
+            padding: 1em;
+            margin-bottom: 1em;
+        }
+
+        .section-title {
+            font-size: 1.25em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+
+        .section-title > i {
+            margin-right: 0.25em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="alert alert-secondary banner">
+        <i class="fa-solid fa-dollar-sign"></i>
+        <span>Super Budget</span>
+    </div>
+
+    <!-- Add New Transactions section. -->
+    <section>
+        <div class="section-title">
+            <i class="fa-solid fa-money-bill-transfer"></i>
+            <span>Add New Transaction</span>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Payee">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Category">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Amount">
+            </div>
+            <div class="col">
+                <button class="btn btn-primary">Add Transaction</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add/Update Budget Categories section. -->
+    <section>
+        <div class="section-title">
+            <i class="fa-solid fa-tag"></i>
+            <span>Add/Update Budget Categories</span>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <input type="text" class="form-control" placeholder="Category">
+            </div>
+            <div class="col-3">
+                <input type="text" class="form-control" placeholder="Amount allocated">
+            </div>
+            <div class="col-3">
+                <button class="btn btn-primary">Add/Update Budget Category</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Monthly Budget section. -->
+    <section>
+        <div class="section-title">
+            <i class="fa-solid fa-wallet"></i>
+            <span>Current Monthly Budget</span>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Category</th>
+                <th>Assigned</th>
+                <th>Activity</th>
+                <th>Remaining</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+<!--            <tr th:each="budget : ${budgetDtoList}">-->
+<!--                <span style="display: inline-block;" th:text="${budget.categoryId}">3</span>-->
+<!--                <td th:text="${budget.category}"></td>-->
+<!--                <td th:text="${budget.assigned}"></td>-->
+<!--                <td th:text="${budget.activity}"></td>-->
+<!--                <td th:text="${budget.remaining}"></td>-->
+<!--                <td>-->
+<!--                    <button class="btn btn-danger category-delete-button">Delete</button>-->
+<!--                </td>-->
+<!--            </tr>-->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Recent Transaction section. -->
+    <section>
+        <div class="section-title">
+            <i class="fa-solid fa-list-ul"></i>
+            <span>Recent Transactions</span>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Payee</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+<!--            <tr th:each="transactionDto : ${transactionDtoList}">-->
+<!--                <td th:text="${transactionDto.getPayee()}"></td>-->
+<!--                <td th:text="${transactionDto.getCategory()}"></td>-->
+<!--                <td th:text="${transactionDto.getAmount()}"></td>-->
+<!--                <td>-->
+<!--                    <button class="btn btn-danger transaction-delete-button">Delete</button>-->
+<!--                </td>-->
+<!--            </tr>-->
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<!-- Bootstrap script files. -->
+<script src="../static/js/bootstrap.bundle.js"></script>
+<script src="../static/js/jquery-3.6.4.min.js"></script>
+
+<!-- Custom script. -->
+<script>
+    /**
+     * Make the window redirect to the specified url.
+     * @param url the url to redirect.
+     */
+    function redirect(url) {
+        const host = window.location.host;
+
+        console.log(host + url)
+        window.location.href = host + url;
+    }
+
+    $(".category-delete-button").on("click", function () {
+        const categoryIdSibling = $(this).parent().siblings()[0]
+        console.log(categoryIdSibling)
+        const categoryId = $(categoryIdSibling).html();
+
+        console.log(categoryId)
+    })
+
+    $(".transaction-delete-button").on("click", function () {
+        const categorySibling = $(this).parent().siblings()[1]
+        const categoryName = $(categorySibling).html();
+
+        redirect("/delete_category?categoryName=" + categoryName)
+    })
+</script>
+</body>
+</html>

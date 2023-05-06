@@ -37,3 +37,10 @@ build/
 ### Mac OS ###
 .DS_Store
 out
+
+.idea
+
+
+super-budget/src/main/resources/static/assets/
+super-budget/src/main/resources/static/js/
+super-budget/src/main/resources/static/css/
