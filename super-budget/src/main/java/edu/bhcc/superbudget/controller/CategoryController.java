@@ -3,7 +3,6 @@ package edu.bhcc.superbudget.controller;
 import edu.bhcc.superbudget.model.Category;
 import edu.bhcc.superbudget.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +23,19 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    /**
+     * Adds a category.
+     * @param categoryName the name of the category to add
+     * @param allocated    the amount of money to allocate for the category.
+     * @return template name.
+     */
     @GetMapping("add_budget_category")
     public String addOrUpdateCategory(
         @RequestParam("category") String categoryName,
         @RequestParam("allocated") Double allocated,
         Model model
     ) {
-        System.out.println(categoryName);
-        System.out.println(allocated);
-
-        final Category category = categoryService.findCategoryByName(categoryName);
+        final Category category = categoryService.getCategoryByName(categoryName);
         if (category != null) {
             // Category already exists, update it.
             categoryService.updateCategory(category.getId(), categoryName, allocated);
@@ -41,14 +43,23 @@ public class CategoryController {
         } else {
             // Category does not exist, create it.
             categoryService.createCategory(categoryName, allocated);
-            model.addAttribute("message", "Budget category added: " + categoryName);
+            model.addAttribute("message", "New budget category added: " + categoryName + ".");
         }
 
         return "index";
     }
 
+    /**
+     * Deletes a category.
+     * @param categoryId the id of the category to delete.
+     * @return template name.
+     */
     @GetMapping("delete_category")
-    public String deleteCategory(@Param("id") Long categoryId, Model model) {
+    public String deleteCategory(@RequestParam("id") Long categoryId, Model model) {
+        final Category category = categoryService.getCategoryById(categoryId);
+        categoryService.deleteCategoryById(categoryId);
+
+        model.addAttribute("message", "Category deleted: " + category.getName() + ".");
 
         return "index";
     }

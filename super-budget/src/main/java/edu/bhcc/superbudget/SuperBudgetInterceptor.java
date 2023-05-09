@@ -2,6 +2,7 @@ package edu.bhcc.superbudget;
 
 import edu.bhcc.superbudget.dto.BudgetDto;
 import edu.bhcc.superbudget.dto.TransactionDto;
+import edu.bhcc.superbudget.model.Transaction;
 import edu.bhcc.superbudget.service.CategoryService;
 import edu.bhcc.superbudget.service.TransactionService;
 import io.micrometer.common.lang.NonNullApi;
@@ -14,7 +15,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @NonNullApi
@@ -45,12 +45,13 @@ public class SuperBudgetInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) {
         if (modelAndView != null) {
             final ModelMap modelMap = modelAndView.getModelMap();
-            System.out.println(modelMap.get("message"));
 
             final List<BudgetDto> budgetDtoList = categoryService.getAllBudgetDto();
             modelMap.put("budgetDtoList", budgetDtoList);
 
-            final List<TransactionDto> transactionDtoList = new ArrayList<>();
+            final List<Transaction> transactionList = transactionService.getAllTransaction();
+            final List<TransactionDto> transactionDtoList =
+                transactionList.stream().map(transactionService::toTransactionDto).toList();
             modelMap.put("transactionDtoList", transactionDtoList);
         }
     }

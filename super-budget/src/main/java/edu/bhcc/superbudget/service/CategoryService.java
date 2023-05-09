@@ -35,10 +35,13 @@ public class CategoryService {
     /**
      * Retrieves category by its id.
      * @param categoryId the id of the category to retrieve.
-     * @return the category found; null if the category does not exist.
+     * @return the category retrieved.
+     * @throws CategoryNotFoundException if the category does not exist.
      */
     public Category getCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId).orElse(null);
+        return categoryRepository
+            .findById(categoryId)
+            .orElseThrow(() -> new CategoryNotFoundException(categoryId));
     }
 
     /**
@@ -46,7 +49,7 @@ public class CategoryService {
      * @param categoryName the name of the category to retrieve.
      * @return the category found; null if the category does not exist.
      */
-    public Category findCategoryByName(String categoryName) {
+    public Category getCategoryByName(String categoryName) {
         return categoryRepository.findFirstByName(categoryName).orElse(null);
     }
 
@@ -93,9 +96,6 @@ public class CategoryService {
      */
     public Category updateCategory(Long categoryId, String categoryName, Double allocated) {
         final Category category = getCategoryById(categoryId);
-        if (category == null) {
-            throw new CategoryNotFoundException(categoryId);
-        }
 
         if (categoryName != null) category.setName(categoryName);
         if (allocated != null) category.setAllocated(allocated);

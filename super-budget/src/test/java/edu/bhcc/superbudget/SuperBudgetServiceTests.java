@@ -26,13 +26,18 @@ class SuperBudgetServiceTests {
     private final CategoryService categoryService;
 
     private final TransactionService transactionService;
-    @Autowired
-    private TransactionRepository transactionRepository;
+
+    private final TransactionRepository transactionRepository;
 
     @Autowired
-    public SuperBudgetServiceTests(CategoryService categoryService, TransactionService transactionService) {
+    public SuperBudgetServiceTests(
+        CategoryService categoryService,
+        TransactionService transactionService,
+        TransactionRepository transactionRepository
+    ) {
         this.categoryService = categoryService;
         this.transactionService = transactionService;
+        this.transactionRepository = transactionRepository;
     }
 
     @Test

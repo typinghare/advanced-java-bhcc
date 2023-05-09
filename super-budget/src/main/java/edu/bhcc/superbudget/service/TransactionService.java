@@ -1,5 +1,8 @@
 package edu.bhcc.superbudget.service;
 
+import edu.bhcc.superbudget.dto.TransactionDto;
+import edu.bhcc.superbudget.exception.TransactionNotFoundException;
+import edu.bhcc.superbudget.model.Category;
 import edu.bhcc.superbudget.model.Transaction;
 import edu.bhcc.superbudget.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,32 @@ public class TransactionService {
      */
     private final TransactionRepository transactionRepository;
 
+    /**
+     * Category service.
+     */
+    private final CategoryService categoryService;
+
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, CategoryService categoryService) {
         this.transactionRepository = transactionRepository;
+        this.categoryService = categoryService;
+    }
+
+    /**
+     * Converts a transaction model to a transaction data transfer object.
+     * @param transaction the transaction model to convert.
+     * @return a transaction data transfer object.
+     */
+    public TransactionDto toTransactionDto(Transaction transaction) {
+        final Long categoryId = transaction.getCategory().getId();
+        final Category category = categoryService.getCategoryById(categoryId);
+
+        final TransactionDto transactionDto = new TransactionDto();
+        transactionDto.setPayee(transaction.getPayee());
+        transactionDto.setCategory(category.getName());
+        transactionDto.setAmount(transaction.getAmount());
+
+        return transactionDto;
     }
 
     /**
@@ -30,8 +56,9 @@ public class TransactionService {
      * @return the category created.
      */
     public Transaction createTransaction(Long categoryId, String payee, Double amount) {
+        final Category category = categoryService.getCategoryById(categoryId);
         final Transaction transaction = new Transaction();
-        transaction.setCategoryId(categoryId);
+        transaction.setCategory(category);
         transaction.setPayee(payee);
         transaction.setAmount(amount);
 
@@ -39,10 +66,21 @@ public class TransactionService {
     }
 
     /**
+     * Retrieves a transaction by its id.
+     * @param transactionId the id of the transaction to retrieve.
+     * @return the transaction retrieved.
+     */
+    public Transaction getTransactionById(Long transactionId) {
+        return transactionRepository
+            .findById(transactionId)
+            .orElseThrow(() -> new TransactionNotFoundException(transactionId));
+    }
+
+    /**
      * Retrieves all transactions.
      * @return a list of transactions.
      */
-    public List<Transaction> findAllTransaction() {
+    public List<Transaction> getAllTransaction() {
         return transactionRepository.findAll();
     }
 

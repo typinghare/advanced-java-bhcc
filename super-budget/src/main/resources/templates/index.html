@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <title>Super Budget</title>
 
-    <!-- Boostrap stylesheet file. -->
+    <!-- Stylesheet files. -->
     <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="../static/fontawesome6/css/fontawesome.css"/>
     <link rel="stylesheet" type="text/css" href="../static/fontawesome6/css/brands.css"/>
     <link rel="stylesheet" type="text/css" href="../static/fontawesome6/css/solid.css"/>
-
 
     <!-- Custom stylesheet. -->
     <style>
@@ -58,16 +57,16 @@
 
         <div class="row">
             <div class="col">
-                <input type="text" class="form-control" placeholder="Payee">
+                <input type="text" class="form-control" placeholder="Payee" id="inputAddTransactionPayee">
             </div>
             <div class="col">
-                <input type="text" class="form-control" placeholder="Category">
+                <input type="text" class="form-control" placeholder="Category" id="inputAddTransactionCategory">
             </div>
             <div class="col">
-                <input type="text" class="form-control" placeholder="Amount">
+                <input type="text" class="form-control" placeholder="Amount" id="inputAddTransactionAmount">
             </div>
             <div class="col">
-                <button class="btn btn-primary">Add Transaction</button>
+                <button class="btn btn-primary add-transaction-button">Add Transaction</button>
             </div>
         </div>
     </section>
@@ -81,13 +80,14 @@
 
         <div class="row">
             <div class="col-3">
-                <input type="text" class="form-control" placeholder="Category">
+                <input type="text" class="form-control" placeholder="Category" id="inputAddCategoryCategory">
             </div>
             <div class="col-3">
-                <input type="text" class="form-control" placeholder="Amount allocated">
+                <input type="text" class="form-control" placeholder="Amount allocated"
+                       id="inputAddCategoryAmountAllocated">
             </div>
             <div class="col-3">
-                <button class="btn btn-primary">Add/Update Budget Category</button>
+                <button class="btn btn-primary add-update-category-button">Add/Update Budget Category</button>
             </div>
         </div>
     </section>
@@ -110,16 +110,16 @@
             </tr>
             </thead>
             <tbody>
-<!--            <tr th:each="budget : ${budgetDtoList}">-->
-<!--                <span style="display: inline-block;" th:text="${budget.categoryId}">3</span>-->
-<!--                <td th:text="${budget.category}"></td>-->
-<!--                <td th:text="${budget.assigned}"></td>-->
-<!--                <td th:text="${budget.activity}"></td>-->
-<!--                <td th:text="${budget.remaining}"></td>-->
-<!--                <td>-->
-<!--                    <button class="btn btn-danger category-delete-button">Delete</button>-->
-<!--                </td>-->
-<!--            </tr>-->
+            <tr th:each="budgetDto : ${budgetDtoList}">
+                <td th:text="${budgetDto.category}"></td>
+                <td th:text="${budgetDto.assigned}"></td>
+                <td th:text="${budgetDto.activity}"></td>
+                <td th:text="${budgetDto.remaining}"></td>
+                <td>
+                    <span style="display: none;" th:text="${budgetDto.categoryId}">3</span>
+                    <button class="btn btn-danger category-delete-button">Delete</button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </section>
@@ -141,14 +141,14 @@
             </tr>
             </thead>
             <tbody>
-<!--            <tr th:each="transactionDto : ${transactionDtoList}">-->
-<!--                <td th:text="${transactionDto.getPayee()}"></td>-->
-<!--                <td th:text="${transactionDto.getCategory()}"></td>-->
-<!--                <td th:text="${transactionDto.getAmount()}"></td>-->
-<!--                <td>-->
-<!--                    <button class="btn btn-danger transaction-delete-button">Delete</button>-->
-<!--                </td>-->
-<!--            </tr>-->
+            <tr th:each="transactionDto : ${transactionDtoList}">
+                <td th:text="${transactionDto.getPayee()}"></td>
+                <td th:text="${transactionDto.getCategory()}"></td>
+                <td th:text="${transactionDto.getAmount()}"></td>
+                <td>
+                    <button class="btn btn-danger transaction-delete-button">Delete</button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </section>
@@ -165,25 +165,37 @@
      * @param url the url to redirect.
      */
     function redirect(url) {
-        const host = window.location.host;
-
-        console.log(host + url)
-        window.location.href = host + url;
+        console.log(url)
+        window.location.href = url;
     }
 
+    $(".add-transaction-button").on("click", function () {
+        const payee = $("#inputAddTransactionPayee").val();
+        const category = $("#inputAddTransactionCategory").val();
+        const amount = $("#inputAddTransactionAmount").val();
+
+        redirect(`/add_transaction?payee=${payee}&category=${category}&amount=${amount}`)
+    })
+
+    $(".add-update-category-button").on("click", function () {
+        const category = $("#inputAddCategoryCategory").val();
+        const amountAllocated = $("#inputAddCategoryAmountAllocated").val();
+
+        redirect(`/add_budget_category?category=${category}&allocated=${amountAllocated}`)
+    })
+
     $(".category-delete-button").on("click", function () {
-        const categoryIdSibling = $(this).parent().siblings()[0]
-        console.log(categoryIdSibling)
+        const categoryIdSibling = $(this).siblings()[0]
         const categoryId = $(categoryIdSibling).html();
 
-        console.log(categoryId)
+        redirect(`/delete_category?CategoryId=${categoryId}`)
     })
 
     $(".transaction-delete-button").on("click", function () {
         const categorySibling = $(this).parent().siblings()[1]
         const categoryName = $(categorySibling).html();
 
-        redirect("/delete_category?categoryName=" + categoryName)
+        redirect(`/delete_transaction?categoryName=${categoryName}`)
     })
 </script>
 </body>

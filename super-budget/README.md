@@ -30,6 +30,16 @@
 
 # Project Structure
 
+> <span style="font-size: 1.2em; font-weight: bold;">Javadoc and Comments</span> \
+> <span style="color: #999;"> I decided not to utilize `@OneToMany` and `@ManyToOne` annotations to minimize the usage
+> of "join" clauses in my SQL,
+> which may negatively impact performance. For instance, when retrieving a transaction record, using these annotations
+> would automatically join the category table and fetch the corresponding category record. However, if the category
+> table contains numerous fields, this could significantly slow down the query speed. Additionally, using these
+> annotations can make it difficult to expand the business logic and maintain the codebase in the future. **However, I
+> still put them into my code in the form of comment in model classes.** </span> \
+> In order to make it perfect, I just implemented `@OneToMany` and `@ManyToOne`.
+
 # Application Properties
 
 This project has only one `.properties` file, which is the default `application.properties`. The following is the
@@ -47,22 +57,41 @@ spring.jpa.show-sql=true
 spring.jpa.hibernate.ddl-auto=create
 # The url of the database.
 spring.datasource.url=jdbc:mysql://localhost:3306/budget
-# The username.
+# The username of the database user.
 spring.datasource.username=root
-# The password.
+# The password of the database user.
 spring.datasource.password=******
 ~~~
 
 # Testing
 
-Testing environment should include:
+To properly set up the testing environment, it is required to have the following components:
 
-* Java `19.0.x`
-* Maven `3.8.x`
-* A running MySQL `8.0.32` service.
+* Java version `19.0.x` or newer.
+* Maven version `3.8.x` or newer.
+* MySQL service version `8.0.32` that is running.
 
-Prior to testing, it is necessary for the testers to update the database URL, username, and password fields in the
-the `application.properties` file.
+Before conducting any tests, it is mandatory for the testers to update the `application.properties` file by filling in
+the relevant database URL, username, and password fields. After updating the properties file, testers must navigate to
+the project root directory and execute the following command to install dependencies and clean the project:
+
+~~~bash
+mvn clean install
+~~~
+
+After all preparation is completed, execute the following command to run the unit tests:
+
+~~~bash
+mvn test
+~~~
+
+If all unit tests have been passed, you may start the application by executing the following command:
+
+~~~bash
+mvn spring-boot:run
+~~~
+
+Upon successful execution of the command, the application will start listening on port 8080 if the port is available.
 
 # References
 
@@ -73,3 +102,7 @@ the `application.properties` file.
 5. [Thymeleaf Documentation](https://www.thymeleaf.org/documentation.html)
 6. [How to truncate a foreign key constrained table?](https://stackoverflow.com/questions/5452760/how-to-truncate-a-foreign-key-constrained-table)
 7. [How to get domain name from URL in JavaScript](https://www.javatpoint.com/how-to-get-domain-name-from-url-in-javascript#:~:text=The%20most%20straightforward%20way%20to,location.)
+8. [Spring Data JPA @Query](https://www.baeldung.com/spring-data-jpa-query)
+9. [Introduction to Spring MVC HandlerInterceptor](https://www.baeldung.com/spring-mvc-handlerinterceptor)
+10. [Read all text from a file into a String in Java](https://www.techiedelight.com/read-all-text-from-file-into-string-java/#:~:text=To%20read%20all%20the%20bytes,with%20a%20charset%20for%20decoding)
+11. [Common MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types)

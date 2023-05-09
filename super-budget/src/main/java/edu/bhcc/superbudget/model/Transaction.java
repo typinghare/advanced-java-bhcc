@@ -3,10 +3,13 @@ package edu.bhcc.superbudget.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 
+import java.beans.JavaBean;
+
 /**
  * Transaction Model.
  */
 @Entity
+@JavaBean
 @Table(name = "transaction")
 public class Transaction {
     @Id
@@ -15,9 +18,10 @@ public class Transaction {
     @Comment("The primary key of this table.")
     private Long id;
 
-    @Column(name = "category_id", nullable = false)
-    @Comment("The id of the category of which this transaction belong.")
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @Comment("The category of which this transaction belong.")
+    private Category category;
 
     @Column(name = "payee", nullable = false)
     @Comment("Payee of this transaction.")
@@ -27,9 +31,6 @@ public class Transaction {
     @Comment("The amount of money of this transaction.")
     private Double amount;
 
-//    @ManyToOne()
-//    private Category category;
-
     public Long getId() {
         return id;
     }
@@ -38,12 +39,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getPayee() {

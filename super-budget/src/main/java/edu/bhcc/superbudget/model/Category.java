@@ -3,10 +3,14 @@ package edu.bhcc.superbudget.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 
+import java.beans.JavaBean;
+import java.util.List;
+
 /**
  * Category Model.
  */
 @Entity
+@JavaBean
 @Table(name = "category")
 public class Category {
     @Id
@@ -22,6 +26,9 @@ public class Category {
     @Column(name = "allocated", nullable = false)
     @Comment("The total amount of money of transactions allocated for this category.")
     private Double allocated;
+
+    @OneToMany(mappedBy = "category", orphanRemoval = true)
+    private List<Transaction> transactionList;
 
     public Long getId() {
         return id;

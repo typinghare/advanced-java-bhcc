@@ -11,5 +11,10 @@ import java.util.Optional;
  */
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+    /**
+     * Retrieves a category by its name.
+     * @param categoryName the name of the category to retrieve.
+     * @return the category retrieved (optional).
+     */
     Optional<Category> findFirstByName(String categoryName);
 }
