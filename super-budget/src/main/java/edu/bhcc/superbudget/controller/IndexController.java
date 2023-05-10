@@ -5,7 +5,6 @@ import edu.bhcc.superbudget.dto.TransactionDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,28 +42,6 @@ public class IndexController {
         return "index";
     }
 
-//    @GetMapping("/static/js/{filename}")
-//    @ResponseBody
-//    public ResponseEntity<String> staticJs(@PathVariable("filename") String filename) throws IOException {
-//        final String fileContent = getFileContent("src/main/resources/static/js/" + filename);
-//        final HttpHeaders headers = new HttpHeaders();
-//        headers.set("Content-Type", "text/css;charset=UTF-8");
-//        headers.setContentDisposition(ContentDisposition.builder("attachment").filename(filename).build());
-//
-//        return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/static/css/{filename}")
-//    @ResponseBody
-//    public ResponseEntity<String> staticCss(@PathVariable("filename") String filename) throws IOException {
-//        final String fileContent = getFileContent("src/main/resources/static/css/" + filename);
-//        final HttpHeaders headers = new HttpHeaders();
-//        headers.set("Content-Type", "text/css;charset=UTF-8");
-//        headers.setContentDisposition(ContentDisposition.builder("attachment").filename(filename).build());
-//
-//        return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
-//    }
-
     /**
      * Retrieves static resources.
      * @param request http request
@@ -87,8 +64,8 @@ public class IndexController {
         final String contentType = switch (extension) {
             case "css" -> "text/css;charset=utf-8";
             case "js" -> "text/js;charset=utf-8";
-            case "woff2" -> "application/woff2";
-            case "ttf" -> "application/ttf";
+            case "woff2" -> "font/woff2";
+            case "ttf" -> "font/ttf";
             default -> "";
         };
 

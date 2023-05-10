@@ -9,6 +9,6 @@ public class TransactionNotFoundException extends RuntimeException {
      * @param transactionId the id of the transaction.
      */
     public TransactionNotFoundException(Long transactionId) {
-        super("The id of the transaction is: " + transactionId);
+        super("The transaction does not exist. Id = " + transactionId + ".");
     }
 }

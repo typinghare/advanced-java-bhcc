@@ -41,9 +41,10 @@ public class TransactionService {
         final Category category = categoryService.getCategoryById(categoryId);
 
         final TransactionDto transactionDto = new TransactionDto();
+        transactionDto.setId(transaction.getId());
         transactionDto.setPayee(transaction.getPayee());
         transactionDto.setCategory(category.getName());
-        transactionDto.setAmount(transaction.getAmount());
+        transactionDto.setAmount(Math.round(transaction.getAmount() * 100.) / 100.);
 
         return transactionDto;
     }

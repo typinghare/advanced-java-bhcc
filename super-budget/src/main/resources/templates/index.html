@@ -38,6 +38,18 @@
         .section-title > i {
             margin-right: 0.25em;
         }
+
+        .remaining-positive {
+            color: green;
+        }
+
+        .remaining-zero {
+            color: gray;
+        }
+
+        .remaining-negative {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +58,15 @@
     <div class="alert alert-secondary banner">
         <i class="fa-solid fa-dollar-sign"></i>
         <span>Super Budget</span>
+    </div>
+
+    <div>
+        <div th:if="${message != null}" class="alert alert-success" role="alert" th:text="${message}">
+            The success message is displayed here.
+        </div>
+        <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert" th:text="${errorMessage}">
+            The error message is displayed here.
+        </div>
     </div>
 
     <!-- Add New Transactions section. -->
@@ -111,12 +132,16 @@
             </thead>
             <tbody>
             <tr th:each="budgetDto : ${budgetDtoList}">
-                <td th:text="${budgetDto.category}"></td>
-                <td th:text="${budgetDto.assigned}"></td>
-                <td th:text="${budgetDto.activity}"></td>
-                <td th:text="${budgetDto.remaining}"></td>
+                <td th:text="${budgetDto.getCategory()}"></td>
+                <td th:text="${budgetDto.getAssigned()}"></td>
+                <td th:text="${budgetDto.getActivity()}"></td>
+                <td th:with="remaining = ${budgetDto.getRemaining()}">
+                    <span th:if="${remaining > 0}" th:text="${remaining}" class="remaining-positive"></span>
+                    <span th:if="${remaining == 0}" th:text="${remaining}" class="remaining-zero"></span>
+                    <span th:if="${remaining < 0}" th:text="${remaining}" class="remaining-negative"></span>
+                </td>
                 <td>
-                    <span style="display: none;" th:text="${budgetDto.categoryId}">3</span>
+                    <span style="display: none;" th:text="${budgetDto.getCategoryId()}"></span>
                     <button class="btn btn-danger category-delete-button">Delete</button>
                 </td>
             </tr>
@@ -146,6 +171,7 @@
                 <td th:text="${transactionDto.getCategory()}"></td>
                 <td th:text="${transactionDto.getAmount()}"></td>
                 <td>
+                    <span style="display: none;" th:text="${transactionDto.getId()}"></span>
                     <button class="btn btn-danger transaction-delete-button">Delete</button>
                 </td>
             </tr>
@@ -160,13 +186,19 @@
 
 <!-- Custom script. -->
 <script>
+    let redirecting = false;
+
     /**
      * Make the window redirect to the specified url.
      * @param url the url to redirect.
      */
     function redirect(url) {
-        console.log(url)
-        window.location.href = url;
+        // To avoid throttles.
+        if (redirecting === true) return;
+        redirecting = true;
+
+        console.log("http://" + window.location.host + url)
+        window.location.href = "http://" + window.location.host + url;
     }
 
     $(".add-transaction-button").on("click", function () {
@@ -188,14 +220,14 @@
         const categoryIdSibling = $(this).siblings()[0]
         const categoryId = $(categoryIdSibling).html();
 
-        redirect(`/delete_category?CategoryId=${categoryId}`)
+        redirect(`/delete_category?id=${categoryId}`)
     })
 
     $(".transaction-delete-button").on("click", function () {
-        const categorySibling = $(this).parent().siblings()[1]
-        const categoryName = $(categorySibling).html();
+        const categoryIdSibling = $(this).siblings()[0]
+        const transactionId = $(categoryIdSibling).html();
 
-        redirect(`/delete_transaction?categoryName=${categoryName}`)
+        redirect(`/delete_transaction?id=${transactionId}`)
     })
 </script>
 </body>

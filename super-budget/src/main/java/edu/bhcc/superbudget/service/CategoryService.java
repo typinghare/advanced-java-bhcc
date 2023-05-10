@@ -50,7 +50,9 @@ public class CategoryService {
      * @return the category found; null if the category does not exist.
      */
     public Category getCategoryByName(String categoryName) {
-        return categoryRepository.findFirstByName(categoryName).orElse(null);
+        return categoryRepository
+            .findFirstByName(categoryName)
+            .orElseThrow(() -> new CategoryNotFoundException(categoryName));
     }
 
     /**
@@ -116,11 +118,13 @@ public class CategoryService {
                 .getSumByCategoryId(category.getId())
                 .orElse(0.0);
 
+            final double assigned = category.getAllocated();
+            final double remaining = category.getAllocated() - activity;
             budgetDto.setCategoryId(category.getId());
             budgetDto.setCategory(category.getName());
-            budgetDto.setActivity(activity);
-            budgetDto.setAssigned(category.getAllocated());
-            budgetDto.setRemaining(category.getAllocated() - activity);
+            budgetDto.setActivity(Math.round(activity * 100.) / 100.);
+            budgetDto.setAssigned(Math.round(assigned * 100.) / 100.);
+            budgetDto.setRemaining(Math.round(remaining * 100.) / 100.);
 
             budgetDtoList.add(budgetDto);
         }

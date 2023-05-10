@@ -17,6 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+/**
+ * A custom handler interceptor.
+ */
 @NonNullApi
 @Component
 public class SuperBudgetInterceptor implements HandlerInterceptor {

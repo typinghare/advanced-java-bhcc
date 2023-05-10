@@ -8,6 +8,11 @@ import java.beans.JavaBean;
 @JavaBean
 public class TransactionDto {
     /**
+     * the id of the transaction.
+     */
+    private Long id;
+
+    /**
      * The payee of this transaction.
      */
     private String payee;
@@ -21,6 +26,14 @@ public class TransactionDto {
      * The amount of money paid in this transaction.
      */
     private Double amount;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getPayee() {
         return payee;

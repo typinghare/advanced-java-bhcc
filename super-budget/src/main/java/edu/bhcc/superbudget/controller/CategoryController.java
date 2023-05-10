@@ -1,5 +1,6 @@
 package edu.bhcc.superbudget.controller;
 
+import edu.bhcc.superbudget.exception.CategoryNotFoundException;
 import edu.bhcc.superbudget.model.Category;
 import edu.bhcc.superbudget.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,13 @@ public class CategoryController {
         @RequestParam("allocated") Double allocated,
         Model model
     ) {
-        final Category category = categoryService.getCategoryByName(categoryName);
-        if (category != null) {
+        try {
+            final Category category = categoryService.getCategoryByName(categoryName);
+
             // Category already exists, update it.
             categoryService.updateCategory(category.getId(), categoryName, allocated);
             model.addAttribute("message", "Budget category updated: " + categoryName);
-        } else {
+        } catch (CategoryNotFoundException e) {
             // Category does not exist, create it.
             categoryService.createCategory(categoryName, allocated);
             model.addAttribute("message", "New budget category added: " + categoryName + ".");
@@ -56,10 +58,14 @@ public class CategoryController {
      */
     @GetMapping("delete_category")
     public String deleteCategory(@RequestParam("id") Long categoryId, Model model) {
-        final Category category = categoryService.getCategoryById(categoryId);
-        categoryService.deleteCategoryById(categoryId);
+        try {
+            final Category category = categoryService.getCategoryById(categoryId);
+            categoryService.deleteCategoryById(categoryId);
 
-        model.addAttribute("message", "Category deleted: " + category.getName() + ".");
+            model.addAttribute("message", "Category deleted: " + category.getName() + ".");
+        } catch (CategoryNotFoundException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
 
         return "index";
     }

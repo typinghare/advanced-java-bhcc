@@ -9,15 +9,14 @@ public class CategoryNotFoundException extends RuntimeException {
      * @param categoryId the id of the category.
      */
     public CategoryNotFoundException(Long categoryId) {
-        super("The id of the category is: " + categoryId);
+        super("Category does not exist. Id = " + categoryId + ".");
     }
 
     /**
      * Creates a category not found exception.
      * @param categoryName the name of the category.
      */
-    @Deprecated
     public CategoryNotFoundException(String categoryName) {
-        super("The name of the category is: " + categoryName);
+        super("Category does not exist. Name = " + categoryName + ".");
     }
 }

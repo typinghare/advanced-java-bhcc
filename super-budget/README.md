@@ -1,6 +1,6 @@
 # Super Budget
 
-# Basic Information
+## Basic Information
 
 * **Project name**: Super Budget
 * **Group member**: Zhuojian Chen (James) (Individual Project)
@@ -28,19 +28,68 @@
 > * Constructors annotated by `@Autowired` in Spring bean classes.
 > * Test methods in test classes.
 
-# Project Structure
+## Project Structure
 
-> <span style="font-size: 1.2em; font-weight: bold;">Javadoc and Comments</span> \
+~~~
+. (<root>/src)
+├── main
+│   ├── java
+│   │   └── edu.bhcc.superbudget
+│   │       ├── SuperBudgetApplication.java
+│   │       ├── SuperBudgetConfiguration.java
+│   │       ├── SuperBudgetInterceptor.java
+│   │       ├── controller
+│   │       │   ├── CategoryController.java
+│   │       │   ├── IndexController.java
+│   │       │   └── TransactionController.java
+│   │       ├── dto
+│   │       │   ├── BudgetDto.java
+│   │       │   └── TransactionDto.java
+│   │       ├── exception
+│   │       │   ├── CategoryNotFoundException.java
+│   │       │   └── TransactionNotFoundException.java
+│   │       ├── model
+│   │       │   ├── Category.java
+│   │       │   └── Transaction.java
+│   │       ├── repository
+│   │       │   ├── CategoryRepository.java
+│   │       │   └── TransactionRepository.java
+│   │       └── service
+│   │           ├── CategoryService.java
+│   │           └── TransactionService.java
+│   └── resources
+│       ├── application.properties
+│       ├── static
+│       └── templates
+│   │       └── service 
+└── test
+    └── java.edu.bhcc.superbudget
+        └── SuperBudgetServiceTests.java
+~~~
+
+The application adheres to a commonly used naming convention and folder structure. The entry point of the application is
+the SuperBudgetApplication class. Configuration settings, including Spring beans (although none are registered here),
+and overridden methods for WebMvcConfigurer, are stored in SuperBudgetConfigucation. The controller folder holds three
+classes responsible for managing HTTP requests. A basic routing mechanism for static resources can be found in the
+IndexController class. The dto folder contains the data transfer objects (DTO) utilized by Thymeleaf. The model folder
+contains the entity classes, also known as models. JPA repositories are kept in the repository folder, while the service
+folder houses two service classes that act as intermediaries between the controller and model layers.
+
+> <span style="font-size: 1.2em; font-weight: bold;">Foreign Key Constraint</span> \
 > <span style="color: #999;"> I decided not to utilize `@OneToMany` and `@ManyToOne` annotations to minimize the usage
-> of "join" clauses in my SQL,
-> which may negatively impact performance. For instance, when retrieving a transaction record, using these annotations
-> would automatically join the category table and fetch the corresponding category record. However, if the category
-> table contains numerous fields, this could significantly slow down the query speed. Additionally, using these
-> annotations can make it difficult to expand the business logic and maintain the codebase in the future. **However, I
-> still put them into my code in the form of comment in model classes.** </span> \
-> In order to make it perfect, I just implemented `@OneToMany` and `@ManyToOne`.
+> of "join" clauses in my SQL, which may negatively impact performance. For instance, when retrieving a transaction
+> record, using these annotations would automatically join the category table and fetch the corresponding category
+> record. However, if the category table contains numerous fields, this could significantly slow down the query speed.
+> Additionally, using these annotations can make it difficult to expand the business logic and maintain the codebase in
+> the future. **However, I still put them into my code in the form of comment in model classes.** </span> \
+> **In order to make it perfect, I just implemented `@OneToMany` and `@ManyToOne`.**
 
-# Application Properties
+> <span style="font-size: 1.2em; font-weight: bold;">Implementation of Button Events</span> \
+> As I am not well-versed in Thymeleaf, and considering the trend of separating frontend and backend, I have decided to
+> avoid using it too much. Instead, I used Javascript for URL redirection, as it better aligns with my preferences for
+> frontend development.
+
+## Application Properties
 
 This project has only one `.properties` file, which is the default `application.properties`. The following is the
 explanation for each property.
@@ -52,18 +101,18 @@ spring.jpa.open-in-view=false
 spring.main.banner-mode=off
 # Prints SQL statements on the terminal.
 spring.jpa.show-sql=true
-# To facilitate testing, the item is set to "create",
-# which instructs Hibernate to drop all tables and create new ones each time the application or test is executed.
+# To facilitate testing, the item is set to "create", which instructs Hibernate to 
+# drop all tables and create new ones each time the application or test is run.
 spring.jpa.hibernate.ddl-auto=create
 # The url of the database.
 spring.datasource.url=jdbc:mysql://localhost:3306/budget
 # The username of the database user.
-spring.datasource.username=root
+spring.datasource.username=user
 # The password of the database user.
-spring.datasource.password=******
+spring.datasource.password=password
 ~~~
 
-# Testing
+## Testing
 
 To properly set up the testing environment, it is required to have the following components:
 
@@ -91,9 +140,18 @@ If all unit tests have been passed, you may start the application by executing t
 mvn spring-boot:run
 ~~~
 
-Upon successful execution of the command, the application will start listening on port 8080 if the port is available.
+Upon successful execution of the command, the application will start listening on port `8080` if the port is available.
 
-# References
+## Notice
+
+I am unsure of the reason, but I have noticed that the icons display correctly when I run the index.html file using
+IntelliJ. However, when I run the Spring application and access the index page via `localhost:8080`, the icons do not
+display properly. Although this does not affect the functionality of the application, it does not look aesthetically
+pleasing. Here is an example of how it should appear:
+
+![index.png](./img/index.png)
+
+## References
 
 1. [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
 2. [Java - Documentation Comments](https://www.tutorialspoint.com/java/java_documentation.htm)
