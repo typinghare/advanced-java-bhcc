@@ -3,8 +3,10 @@ package edu.bhcc.superbudget.service;
 import edu.bhcc.superbudget.dto.BudgetDto;
 import edu.bhcc.superbudget.exception.CategoryNotFoundException;
 import edu.bhcc.superbudget.model.Category;
+import edu.bhcc.superbudget.model.Transaction;
 import edu.bhcc.superbudget.repository.CategoryRepository;
 import edu.bhcc.superbudget.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,14 +110,16 @@ public class CategoryService {
      * Returns all budget DTOs.
      * @return a list of budget DTO.
      */
+    @Transactional
     public List<BudgetDto> getAllBudgetDto() {
         final List<BudgetDto> budgetDtoList = new ArrayList<>();
         for (final Category category : getAllCategory()) {
             final BudgetDto budgetDto = new BudgetDto();
 
-            // Gets` activity` (the amount of money spent) by aggregation.
-            final Double activity = transactionRepository
-                .getSumByCategoryId(category.getId())
+            // Gets `activity` (the amount of money spent) by aggregation.
+            final Double activity = category.getTransactionList().stream()
+                .map(Transaction::getAmount)
+                .reduce(Double::sum)
                 .orElse(0.0);
 
             final double assigned = category.getAllocated();

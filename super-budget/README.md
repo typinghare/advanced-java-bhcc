@@ -68,10 +68,10 @@
 ~~~
 
 The application adheres to a commonly used naming convention and folder structure. The entry point of the application is
-the SuperBudgetApplication class. Configuration settings, including Spring beans (although none are registered here),
-and overridden methods for WebMvcConfigurer, are stored in SuperBudgetConfigucation. The controller folder holds three
-classes responsible for managing HTTP requests. A basic routing mechanism for static resources can be found in the
-IndexController class. The dto folder contains the data transfer objects (DTO) utilized by Thymeleaf. The model folder
+the `SuperBudgetApplication` class. Configuration settings, including Spring beans (although none are registered here),
+and overridden methods for `WebMvcConfigurer`, are stored in `SuperBudgetConfiguration`. The controller folder holds
+three classes responsible for managing HTTP requests. A basic routing mechanism for static resources can be found in the
+`IndexController` class. The dto folder contains the data transfer objects (DTO) utilized by Thymeleaf. The model folder
 contains the entity classes, also known as models. JPA repositories are kept in the repository folder, while the service
 folder houses two service classes that act as intermediaries between the controller and model layers.
 
@@ -144,12 +144,15 @@ Upon successful execution of the command, the application will start listening o
 
 ## Notice
 
-I am unsure of the reason, but I have noticed that the icons display correctly when I run the index.html file using
+<s>I am unsure of the reason, but I have noticed that the icons display correctly when I run the index.html file using
 IntelliJ. However, when I run the Spring application and access the index page via `localhost:8080`, the icons do not
 display properly. Although this does not affect the functionality of the application, it does not look aesthetically
-pleasing. Here is an example of how it should appear:
+pleasing. Here is an example of how it should appear:</s>
 
 ![index.png](./img/index.png)
+
+I haven't resolved the issue, but I have made changes so that the font-awesome CSS file is now being loaded from the
+internet. **This means that testers will need to be connected to the internet when testing.**
 
 ## References
 
@@ -164,3 +167,4 @@ pleasing. Here is an example of how it should appear:
 9. [Introduction to Spring MVC HandlerInterceptor](https://www.baeldung.com/spring-mvc-handlerinterceptor)
 10. [Read all text from a file into a String in Java](https://www.techiedelight.com/read-all-text-from-file-into-string-java/#:~:text=To%20read%20all%20the%20bytes,with%20a%20charset%20for%20decoding)
 11. [Common MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types)
+12. [Error Handling for REST with Spring](https://www.baeldung.com/exception-handling-for-rest-with-spring)

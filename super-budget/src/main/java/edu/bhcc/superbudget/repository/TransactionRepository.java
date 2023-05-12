@@ -24,7 +24,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
      * one in the table `transaction`.
      * @param categoryId the category id of transactions to aggregate.
      * @return an optional summation; the summation will not be presented if no transaction found.
+     * @deprecated Now using the `OneToMany`.
      */
+    @Deprecated()
     @Query(value = "SELECT SUM(amount) FROM transaction WHERE category_id = :categoryId", nativeQuery = true)
     Optional<Double> getSumByCategoryId(@Param("categoryId") Long categoryId);
 }

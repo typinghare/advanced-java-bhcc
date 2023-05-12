@@ -53,4 +53,12 @@ public class Category {
     public void setAllocated(Double allocated) {
         this.allocated = allocated;
     }
+
+    public List<Transaction> getTransactionList() {
+        return transactionList;
+    }
+
+    public void setTransactionList(List<Transaction> transactionList) {
+        this.transactionList = transactionList;
+    }
 }

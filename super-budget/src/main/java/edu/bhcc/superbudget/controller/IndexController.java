@@ -5,6 +5,7 @@ import edu.bhcc.superbudget.dto.TransactionDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import java.util.List;
  * Index controller, including some methods for static resources retrieving.
  */
 @Controller
-public class IndexController {
+public class IndexController implements ErrorController {
     /**
      * Index controller logger.
      */
@@ -74,5 +75,17 @@ public class IndexController {
         headers.set("Content-Type", contentType);
 
         return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+    }
+
+    /**
+     * When expected errors are encountered, the request will be dispatched to this controller.
+     * @param model the model
+     * @return template name.
+     */
+    @GetMapping("/error")
+    public String handleError(Model model) {
+        model.addAttribute("errorMessage", "Unexpected exception was caught. Please check your input.");
+
+        return "index";
     }
 }
